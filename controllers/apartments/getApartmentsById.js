@@ -11,7 +11,7 @@ const getApartmentsById = async (req, res) => {
     throw HttpError(404, `Apartment with ${id} not found`);
   }
 
-  res.json({ apartment: result });
+  res.json({ result });
 };
 
 module.exports = getApartmentsById;

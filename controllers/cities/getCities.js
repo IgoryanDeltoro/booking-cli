@@ -2,10 +2,9 @@ const { City } = require('../../models');
 
 const getCitiesList = async (req, res) => {
   const result = await City.find({});
-
-  res.json({
-    cities: result[0].cities,
-  });
+  const cities = result[0].cities;
+  
+  res.json({ cities });
 };
 
 module.exports = getCitiesList;

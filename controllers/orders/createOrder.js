@@ -25,9 +25,7 @@ const createOrder = async (req, res) => {
 
   await Apartment.findOneAndUpdate({ _id: apartmentId }, { ordered });
 
-  res.status(201).json({
-    order: ordersList,
-  });
+  res.status(201).json({ ordersList });
 };
 
 module.exports = createOrder;

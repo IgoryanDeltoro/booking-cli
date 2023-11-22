@@ -10,9 +10,7 @@ const deleteOrder = async (req, res) => {
 
   await Apartment.findByIdAndUpdate({ _id: apartmentId }, { ordered: null });
 
-  res.status(204).json({
-    ordersList,
-  });
+  res.status(204).json({ ordersList });
 };
 
 module.exports = deleteOrder;
