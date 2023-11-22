@@ -1,6 +1,6 @@
 const { ctrlWrapper } = require('../../decorators');
 
-const getApartmentsById = require('./getApartmentsById');
+const getApartmentsById = require('./getApartmentById');
 const getApartments = require('./getApartments');
 
 module.exports = {
