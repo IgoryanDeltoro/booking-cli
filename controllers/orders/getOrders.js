@@ -12,7 +12,7 @@ const getOrders = async (req, res) => {
     },
   });
 
-  res.json({ result });
+  res.json(result);
 };
 
 module.exports = getOrders;
