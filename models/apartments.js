@@ -17,11 +17,11 @@ const apartmentSchema = new Schema(
       required: true,
     },
     rating: {
-      type: String,
+      type: Number,
       required: true,
     },
     price: {
-      type: String,
+      type: Number,
       required: true,
     },
     location: {
