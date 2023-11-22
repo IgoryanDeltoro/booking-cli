@@ -14,7 +14,7 @@ const getOrders = async (req, res) => {
 
   const result = orderedApartment.map(({ _id, _doc }) => {
     const ID = _id.toString();
-    const data = ordersList
+    const date = ordersList
       // eslint-disable-next-line array-callback-return
       .map(el => {
         if (el.apartmentId === ID) return el.date;
@@ -23,7 +23,7 @@ const getOrders = async (req, res) => {
 
     const { _id: id, ...other } = _doc;
 
-    return { data, id: ID, apartment: { id: ID, ...other } };
+    return { date, id: ID, apartment: { id: ID, ...other } };
   });
 
   res.json(result);
