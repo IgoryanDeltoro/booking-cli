@@ -6,10 +6,15 @@ const getOrders = async (req, res) => {
 
   const apartmentId = ordersList.map(({ apartmentId }) => apartmentId);
 
-  const result = await Apartment.find({
+  const orderedApartment = await Apartment.find({
     _id: {
       $in: apartmentId,
     },
+  });
+
+  const result = orderedApartment.map(({ _id, _doc }) => {
+    const { _id: id, ...other } = _doc;
+    return { id: _id.toString(), ...other };
   });
 
   res.json(result);
