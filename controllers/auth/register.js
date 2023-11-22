@@ -29,15 +29,11 @@ const userRegister = async (req, res) => {
   await User.findByIdAndUpdate(id, { token });
 
   res.status(201).json({
-    status: 'success',
-    code: 201,
-    data: {
-      token,
-      user: {
-        userId: id,
-        name,
-        email,
-      },
+    token,
+    user: {
+      userId: id,
+      name,
+      email,
     },
   });
 };

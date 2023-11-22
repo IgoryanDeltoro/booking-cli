@@ -13,11 +13,7 @@ const updateUserName = async (req, res) => {
     throw HttpError(404);
   }
   res.json({
-    status: 'success',
-    code: 200,
-    data: {
-      user: { name: userName.name },
-    },
+    user: { name: userName.name },
   });
 };
 

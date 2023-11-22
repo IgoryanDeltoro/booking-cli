@@ -10,10 +10,8 @@ const deleteOrder = async (req, res) => {
 
   await Apartment.findByIdAndUpdate({ _id: apartmentId }, { ordered: null });
 
-  res.json({
-    status: 'success',
-    code: 204,
-    data: { ordersList },
+  res.status(204).json({
+    ordersList,
   });
 };
 
