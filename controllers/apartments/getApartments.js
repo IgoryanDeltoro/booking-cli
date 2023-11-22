@@ -5,7 +5,7 @@ const getApartments = async (req, res) => {
     name: 1,
   });
 
-  res.json({ result });
+  res.json(result);
 };
 
 module.exports = getApartments;
