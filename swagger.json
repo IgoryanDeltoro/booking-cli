@@ -1,0 +1,3178 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "So-yummy database API",
+        "description": "Move your app forward with the So-yummy API",
+        "version": "1.0.0"
+    },
+    "host": "https://database-cli.onrender.com/so-yummy",
+    "servers": [
+        {
+            "url": "https://database-cli.onrender.com/so-yummy"
+        }
+    ],
+    "consumes": [
+        "application/json",
+        "multipart/form-data"
+    ],
+    "produces": [
+        "application/json",
+        "multipart/form-data"
+    ],
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Authorization endpoints"
+        },
+        {
+            "name": "Recipes",
+            "description": "Recipes endpoints"
+        },
+        {
+            "name": "Ingredients",
+            "description": "Ingredients endpoints"
+        }
+    ],
+    "paths": {
+        "/users/register": {
+            "post": {
+                "summary": "Register a new user",
+                "description": "Register a new user with the provided credentials",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRegistrationReq"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserRegistrationRes"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or missing required fields"
+                    },
+                    "409": {
+                        "description": "Registration conflict error"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "summary": "User login",
+                "description": "Authenticate and log in a user with the provided credentials",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLoginReq"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User logged in successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserLoginRes"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or missing required fields"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, invalid credentials"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/current": {
+            "get": {
+                "summary": "Get current user information",
+                "description": "Retrieve information about the currently logged-in user",
+                "tags": [
+                    "Auth"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Current user information retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CurrentUserRes"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/avatars": {
+            "patch": {
+                "summary": "Update user's avatar",
+                "description": "Update the avatar for the current user",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "avatar": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Avatar file to be uploaded"
+                                    },
+                                    "name": {
+                                        "name": {
+                                            "type": "string",
+                                            "description": "User's name",
+                                            "example": "Juliet"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User's avatar updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateAvatarRes"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or missing required fields"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/users/subscribe": {
+            "post": {
+                "summary": "Subscribe to a newsletter",
+                "description": "Subscribe to a newsletter to receive updates and news",
+                "tags": [
+                    "Auth"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubscribeReq"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully subscribed to the newsletter",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SubscribeRes"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or missing required fields"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/logout": {
+            "post": {
+                "summary": "User logout",
+                "description": "Log out the currently logged-in user",
+                "tags": [
+                    "Auth"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User logged out successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/modal": {
+            "get": {
+                "summary": "Get user information",
+                "description": "Retrieve information about the user, including the number of days in the application, the number of added recipes, and the number of recipes in favorites.",
+                "tags": [
+                    "Auth"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User information retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserModalResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/users/isinformed": {
+            "patch": {
+                "summary": "Update user's informed status",
+                "description": "Update the informed status of a user to indicate if they are a new user or not.",
+                "tags": [
+                    "Auth"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateUserInformedReq"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User's informed status updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateUserInformedRes"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or missing required fields"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/category-list": {
+            "get": {
+                "summary": "Get recipe category list",
+                "description": "Endpoint to retrieve the list of recipe categories.",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipe category list retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RecipeCategoryListRes"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/main-page": {
+            "get": {
+                "summary": "Get main page recipes",
+                "description": "Retrieve a list of recipes for the main page",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipes retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "type": "array",
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeListRes"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/{id}": {
+            "get": {
+                "summary": "Get recipe by ID",
+                "description": "Retrieve a recipe by its ID",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the recipe",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipe retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeByIdRes"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/search": {
+            "get": {
+                "summary": "Search recipes by title",
+                "description": "Search for recipes based on provided search criteria",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Search by < q > or < title >",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipes found successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/SearchRecipeByTitleRes"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or missing required fields"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/ownRecipes": {
+            "post": {
+                "summary": "Create a new recipe",
+                "description": "Create a new recipe for the authenticated user",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "recipeImg": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Recipe image file"
+                                    },
+                                    "data": {
+                                        "type": "object",
+                                        "properties": {
+                                            "title": {
+                                                "type": "string",
+                                                "description": "Recipe title",
+                                                "example": " Pasta Salad from Ashot  with small pieces of chicken "
+                                            },
+                                            "description": {
+                                                "type": "string",
+                                                "description": "Recipe description",
+                                                "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                            },
+                                            "category": {
+                                                "type": "string",
+                                                "description": "Category name",
+                                                "example": "Chicken"
+                                            },
+                                            "time": {
+                                                "type": "string",
+                                                "description": "Amount of time",
+                                                "example": "50"
+                                            },
+                                            "ingredients": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "string",
+                                                            "description": "Ingredient id",
+                                                            "example": "640c2dd963a319ea671e36d7"
+                                                        },
+                                                        "measure": {
+                                                            "type": "string",
+                                                            "description": "Measure of ingredients",
+                                                            "example": "250g"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "instructions": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "required": [
+                                    "data"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Recipe created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RecipeCreateRes"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or missing required fields"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/category/{category}": {
+            "get": {
+                "summary": "Get recipes by category",
+                "description": "Retrieve recipes by category",
+                "tags": [
+                    "Recipes"
+                ],
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "path",
+                        "description": "Category of the recipe",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipes retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/getRecipeByCategory"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/ownRecipes/": {
+            "get": {
+                "summary": "Get own recipe",
+                "description": "Retrieve all recipes created by the authenticated user",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipe found successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/getOwnRecipe"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/ownRecipes/{id}": {
+            "delete": {
+                "summary": "Delete recipe by ID",
+                "description": "Delete a recipe by its ID for the authenticated user",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the recipe",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipe deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/deleteOwnRecipeById"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/favorite/{id}": {
+            "put": {
+                "summary": "Mark recipe as favorite",
+                "description": "Mark a recipe as a favorite by its ID for the authenticated user",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the recipe",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Recipe marked as favorite successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/addFavoriteRecipeById"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Recipe not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/favorite": {
+            "get": {
+                "summary": "Get favorite recipes",
+                "description": "Retrieve all favorite recipes for the authenticated user",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Favorite recipes retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/getFavoriteRecipeById"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/favorite/{id}/": {
+            "delete": {
+                "summary": "Remove a favorite recipe",
+                "description": "Remove a favorite recipe for the authenticated user",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the recipe",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A favorite recipe removed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/deleteFavoriteById"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/recipes/popular-recipe": {
+            "get": {
+                "summary": "Get popular recipes",
+                "description": "Retrieve popular recipes based on popularity criteria",
+                "tags": [
+                    "Recipes"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Popular recipes retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/getPopularRecipe"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/ingredients/list": {
+            "get": {
+                "summary": "Get ingredient list",
+                "description": "Retrieve a list of ingredients available",
+                "tags": [
+                    "Ingredients"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ingredient list retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/getIngredientsList"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/ingredients": {
+            "get": {
+                "summary": "Get recipes by ingredient",
+                "description": "Retrieve recipes based on a specific ingredient",
+                "tags": [
+                    "Ingredients"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "ing",
+                        "in": "query",
+                        "description": "Ingredient name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Recipes retrieved successfully by ingredient",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/getRecipesByIngredientsRes"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/ingredients/shopping-list/add-ingredient": {
+            "post": {
+                "summary": "Add ingredient to shopping list",
+                "description": "Add an ingredient to the shopping list",
+                "tags": [
+                    "Ingredients"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AddIngredientRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ingredient added to the shopping list successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AddIngredientResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or missing required fields"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/ingredients/shopping-list/remove-ingredient": {
+            "post": {
+                "summary": "Remove ingredient from shopping list",
+                "description": "Remove an ingredient from the shopping list",
+                "tags": [
+                    "Ingredients"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RemoveIngredientRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ingredient removed from the shopping list successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RemoveIngredientResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request or missing required fields"
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/ingredients/shopping-list": {
+            "get": {
+                "summary": "Get shopping list",
+                "description": "Retrieve the current shopping list",
+                "tags": [
+                    "Ingredients"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Shopping list retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/getShoppingListRes"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access, user not logged in"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "UserRegistrationReq": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "User's name",
+                        "example": "Nicole"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "example": "example@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password",
+                        "example": "1qazxsw2"
+                    }
+                }
+            },
+            "UserRegistrationRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 201
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "token": {
+                                "type": "string",
+                                "description": "Encrypted user id",
+                                "example": "NiceyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YTdjNjVlMjhiMjdjNzYwNzIzNmYyOCIsImlhdCI6MTY4ODcxNjg5NH0.3JFBtNrkKFLIcvnlZr-I8GuIKvCKpuuIH9jsO06z9WQole"
+                            },
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "userID": {
+                                        "type": "string",
+                                        "description": "User's id",
+                                        "example": "64a92fe68594a3ed540ff468"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "User's name",
+                                        "example": "Nicole"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "description": "User's email",
+                                        "example": "example@gmail.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "UserLoginReq": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "example": "example@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "User's password",
+                        "example": "1qazxsw2"
+                    }
+                }
+            },
+            "UserLoginRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 201
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "token": {
+                                "type": "string",
+                                "description": "Encrypted user id",
+                                "example": "NiceyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YTdjNjVlMjhiMjdjNzYwNzIzNmYyOCIsImlhdCI6MTY4ODcxNjg5NH0.3JFBtNrkKFLIcvnlZr-I8GuIKvCKpuuIH9jsO06z9WQole"
+                            },
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "userID": {
+                                        "type": "string",
+                                        "description": "User's id",
+                                        "example": "64a92fe68594a3ed540ff468"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "User's name",
+                                        "example": "Nicole"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "description": "User's email",
+                                        "example": "example@gmail.com"
+                                    },
+                                    "avatarURL": {
+                                        "type": "string",
+                                        "description": "User's avatar",
+                                        "example": "https://res.cloudinary.com/dcfetki7g/image/upload/v1689070757/avatars/IMG_4260.jpg.jpg"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "CurrentUserRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "userID": {
+                                        "type": "string",
+                                        "description": "User's id",
+                                        "example": "64a92fe68594a3ed540ff468"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "User's name",
+                                        "example": "Nicole"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "description": "User's email",
+                                        "example": "example@gmail.com"
+                                    },
+                                    "avatarURL": {
+                                        "type": "string",
+                                        "description": "User's avatar",
+                                        "example": "https://res.cloudinary.com/dcfetki7g/image/upload/v1689070757/avatars/IMG_4260.jpg.jpg"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "UpdateNameRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "User's name",
+                                        "example": "Juliet"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "UpdateAvatarRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "avatarURL": {
+                                        "type": "string",
+                                        "description": "User's avatar",
+                                        "example": "https://res.cloudinary.com/dcfetki7g/image/upload/v1688996160/avatars/man.png.png"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "User's name",
+                                        "example": "Juliet"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "SubscribeReq": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "description": "User's email",
+                        "example": "example@gmail.com"
+                    }
+                }
+            },
+            "SubscribeRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Message for user about his successfully  subscription",
+                        "example": "Subscription email is sent"
+                    }
+                }
+            },
+            "UserModalResponse": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "userId": {
+                                        "type": "string",
+                                        "description": "User's id",
+                                        "example": "64ae74b18bd599c3a2f7217e"
+                                    },
+                                    "newUser": {
+                                        "type": "boolean",
+                                        "description": "A flag if user is new",
+                                        "example": false
+                                    },
+                                    "daysInApp": {
+                                        "type": "object",
+                                        "properties": {
+                                            "number": {
+                                                "type": "number",
+                                                "description": "Count days in app",
+                                                "example": 8
+                                            },
+                                            "isInformed": {
+                                                "type": "boolean",
+                                                "description": "Check user informed or not",
+                                                "example": false
+                                            }
+                                        }
+                                    },
+                                    "addedRecipes": {
+                                        "type": "object",
+                                        "properties": {
+                                            "number": {
+                                                "type": "number",
+                                                "description": "Count added recipes ",
+                                                "example": 8
+                                            },
+                                            "isInformed": {
+                                                "type": "boolean",
+                                                "description": "Check user informed or not",
+                                                "example": false
+                                            }
+                                        }
+                                    },
+                                    "favoriteRecipes": {
+                                        "type": "object",
+                                        "properties": {
+                                            "number": {
+                                                "type": "number",
+                                                "description": "Count favorite recipes",
+                                                "example": 8
+                                            },
+                                            "isInformed": {
+                                                "type": "boolean",
+                                                "description": "Check user informed or not",
+                                                "example": false
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "UpdateUserInformedReq": {
+                "type": "object",
+                "properties": {
+                    "newUser": {
+                        "type": "boolean",
+                        "description": "A boolean value indicating whether the user is a new user or not",
+                        "example": true
+                    }
+                }
+            },
+            "UpdateUserInformedRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "user": {
+                                "type": "object",
+                                "properties": {
+                                    "isInformed": {
+                                        "type": "object",
+                                        "properties": {
+                                            "newUser": {
+                                                "type": "boolean",
+                                                "description": "A boolean value indicating whether the user is a new user or not",
+                                                "example": 8
+                                            },
+                                            "daysInApp": {
+                                                "type": "boolean",
+                                                "description": "A boolean value indicating whether user is in app or not",
+                                                "example": false
+                                            },
+                                            "addedRecipes": {
+                                                "type": "boolean",
+                                                "description": "A boolean value indicating whether the recipe was added or not ",
+                                                "example": false
+                                            },
+                                            "favoriteRecipes": {
+                                                "type": "boolean",
+                                                "description": "A boolean value indicating whether favorite recipes is or not ",
+                                                "example": false
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RecipeCategoryListRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "description": "Food name",
+                                            "example": "Beef"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RecipeListRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RecipeByIdRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "description": "Ingredient name",
+                                                        "example": "Salmon"
+                                                    },
+                                                    "desc": {
+                                                        "type": "string",
+                                                        "description": "About ingredient",
+                                                        "example": "Salmon is the common name for several species of ray-finned fish in th…"
+                                                    },
+                                                    "img": {
+                                                        "type": "string",
+                                                        "description": "Ingredient image",
+                                                        "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjx…"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "SearchRecipeByTitleRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RecipeCreateRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 201
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getRecipeByCategory": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 201
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getOwnRecipe": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "totalPages": {
+                                            "type": "number",
+                                            "description": "All count pages",
+                                            "example": 0
+                                        },
+                                        "currentPage": {
+                                            "type": "number",
+                                            "description": "Current page",
+                                            "example": 1
+                                        },
+                                        "perPage": {
+                                            "type": "number",
+                                            "description": "Per page",
+                                            "example": 4
+                                        },
+                                        "totalOwnRecipes": {
+                                            "type": "number",
+                                            "description": "Total user recipes",
+                                            "example": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "deleteOwnRecipeById": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "addFavoriteRecipeById": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 201
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getFavoriteRecipeById": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "deleteFavoriteById": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getPopularRecipe": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getIngredientsList": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "ingredients": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "description": "Ingredient id",
+                                            "example": "640c2dd963a319ea671e36d7"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "description": "Ingredient name",
+                                            "example": "Salmon"
+                                        },
+                                        "desc": {
+                                            "type": "string",
+                                            "description": "About ingredient",
+                                            "example": "Salmon is the common name for several species of ray-finned fish in th…"
+                                        },
+                                        "img": {
+                                            "type": "string",
+                                            "description": "Ingredient image",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjx…"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getRecipesByIngredientsRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "recipe": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "description": "Category id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "description": "Recipe title",
+                                            "example": "Mediterranean Pasta Salad"
+                                        },
+                                        "area": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "Italian"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Recipe description",
+                                            "example": "A salad made with pasta, vegetables (such as tomatoes, cucumbers, and olives), feta cheese, and a dressing made with olive oil and lemon juice."
+                                        },
+                                        "category": {
+                                            "type": "string",
+                                            "description": "Category name",
+                                            "example": "Chicken"
+                                        },
+                                        "time": {
+                                            "type": "string",
+                                            "description": "Amount of time",
+                                            "example": "50"
+                                        },
+                                        "ingredients": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "Ingredient id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    },
+                                                    "measure": {
+                                                        "type": "string",
+                                                        "description": "Measure of ingredients",
+                                                        "example": "250g"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "instructions": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "youtube": {
+                                            "type": "string",
+                                            "description": "Youtube link",
+                                            "example": "https://www.youtube.com/watch?v=e52IL8zYmaE"
+                                        },
+                                        "thumb": {
+                                            "type": "string",
+                                            "description": "Location",
+                                            "example": "https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg"
+                                        },
+                                        "preview": {
+                                            "type": "string",
+                                            "description": "Recipe image in small format",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678560402/mwtf7uqrnsxvlpjqtslc.jpg"
+                                        },
+                                        "favorites": {
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "string",
+                                                        "description": "User's id",
+                                                        "example": "640c2dd963a319ea671e36d7"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "owner": {
+                                            "type": "string",
+                                            "description": "Owner id",
+                                            "example": "6462a6cd4c3d0ddd28897f8e"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "AddIngredientRequest": {
+                "type": "object",
+                "properties": {
+                    "ingredientId": {
+                        "type": "string",
+                        "description": "Ingredient id",
+                        "example": "640c2dd963a319ea671e366a"
+                    },
+                    "recipeId": {
+                        "type": "string",
+                        "description": "Recipe id",
+                        "example": "6462a8f74c3d0ddd28897fdc"
+                    },
+                    "measure": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "Recipe measure ",
+                            "example": "100g"
+                        }
+                    }
+                }
+            },
+            "AddIngredientResponse": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 204
+                    },
+                    "shoppingList": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "ingredientId": {
+                                    "type": "string",
+                                    "description": "Ingredient id",
+                                    "example": "640c2dd963a319ea671e366a"
+                                },
+                                "recipeId": {
+                                    "type": "string",
+                                    "description": "Recipe id",
+                                    "example": "6462a8f74c3d0ddd28897fdc"
+                                },
+                                "measure": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "description": "Recipe measure ",
+                                        "example": "100g"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RemoveIngredientRequest": {
+                "type": "object",
+                "properties": {
+                    "ingredientId": {
+                        "type": "string",
+                        "description": "Ingredient id",
+                        "example": "640c2dd963a319ea671e366a"
+                    },
+                    "recipeId": {
+                        "type": "string",
+                        "description": "Recipe id",
+                        "example": "6462a8f74c3d0ddd28897fdc"
+                    },
+                    "measure": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "Recipe measure ",
+                            "example": "100g"
+                        }
+                    }
+                }
+            },
+            "RemoveIngredientResponse": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "shoppingList": {
+                        "type": "array",
+                        "items": {
+                            "type": "array"
+                        }
+                    }
+                }
+            },
+            "getShoppingListRes": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Response status",
+                        "example": "success"
+                    },
+                    "code": {
+                        "type": "number",
+                        "description": "Response code",
+                        "example": 200
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "shoppingList": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "description": "Ingredient id",
+                                            "example": "640c2dd963a319ea671e36d7"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "description": "Ingredient name",
+                                            "example": "Salmon"
+                                        },
+                                        "desc": {
+                                            "type": "string",
+                                            "description": "About ingredient",
+                                            "example": "Salmon is the common name for several species of ray-finned fish in th…"
+                                        },
+                                        "img": {
+                                            "type": "string",
+                                            "description": "Ingredient image",
+                                            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjx…"
+                                        },
+                                        "measure": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "description": "Recipe measure",
+                                                "example": "100g"
+                                            }
+                                        },
+                                        "recipeId": {
+                                            "type": "string",
+                                            "description": "Recipe id",
+                                            "example": "6462a8f74c3d0ddd28897fdc"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
