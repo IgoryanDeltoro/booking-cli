@@ -7,17 +7,11 @@ const getApartmentsById = async (req, res) => {
 
   const result = await Apartment.findById(id, '-createdAt -updatedAt');
 
-  if (result) {
-    res.json({
-      status: 'success',
-      code: 200,
-      data: {
-        apartment: result,
-      },
-    });
-  } else {
+  if (!result) {
     throw HttpError(404, `Apartment with ${id} not found`);
   }
+
+  res.json({ apartment: result });
 };
 
 module.exports = getApartmentsById;
