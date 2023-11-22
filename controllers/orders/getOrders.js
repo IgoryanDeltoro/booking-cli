@@ -23,7 +23,7 @@ const getOrders = async (req, res) => {
 
     const { _id: id, ...other } = _doc;
 
-    return { data, id: apartmentId, apartment: { id: ID, ...other } };
+    return { data, id: ID, apartment: { id: ID, ...other } };
   });
 
   res.json(result);
