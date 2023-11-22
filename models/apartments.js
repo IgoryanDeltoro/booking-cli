@@ -55,7 +55,7 @@ const apartmentSchema = new Schema(
       },
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: false }
 );
 
 apartmentSchema.post('save', handleMongooseError);
