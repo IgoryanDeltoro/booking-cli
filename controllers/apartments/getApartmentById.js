@@ -3,7 +3,7 @@ const { Apartment } = require('../../models');
 const { HttpError } = require('../../helpers');
 
 const getApartmentsById = async (req, res) => {
-  const { id } = req.params;
+ const { id } = req.params;
 
   const result = await Apartment.findById(id, '-createdAt -updatedAt');
 
