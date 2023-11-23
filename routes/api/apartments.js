@@ -9,7 +9,7 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get('/', apartments.getApartments);
-router.get('/:id', apartments.getApartmentsById);
+router.get('/:id', apartments.getApartmentById);
 router.post('/:id/reviews', apartments.createReview);
 
 module.exports = router;

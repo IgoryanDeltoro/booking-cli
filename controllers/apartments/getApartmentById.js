@@ -2,7 +2,7 @@ const { Apartment, Review, User } = require('../../models');
 const { HttpError } = require('../../helpers');
 const { default: mongoose } = require('mongoose');
 
-const getApartmentsById = async (req, res) => {
+const getApartmentById = async (req, res) => {
   const { id } = req.params;
 
   let result = [];
@@ -39,4 +39,4 @@ const getApartmentsById = async (req, res) => {
   res.json({ ...apartment._doc, reviews: result });
 };
 
-module.exports = getApartmentsById;
+module.exports = getApartmentById;
