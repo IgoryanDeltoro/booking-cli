@@ -1,9 +1,11 @@
 const { ctrlWrapper } = require('../../decorators');
 
-const getApartmentsById = require('./getApartmentById');
+const getApartmentById = require('./getApartmentById');
 const getApartments = require('./getApartments');
+const createReview = require('./createReview');
 
 module.exports = {
-  getApartmentsById: ctrlWrapper(getApartmentsById),
+  getApartmentById: ctrlWrapper(getApartmentById),
   getApartments: ctrlWrapper(getApartments),
+  createReview: ctrlWrapper(createReview),
 };
