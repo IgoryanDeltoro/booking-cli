@@ -1,12 +1,12 @@
 const Joi = require('joi');
 
-const addRecipeSchema = Joi.object({
-  title: Joi.string().required().messages({
-    'string.base': 'The title must be a string',
-    'any.required': 'The title field is required',
-    'string.empty': 'The title field must not be empty',
+const addReviewSchemas = Joi.object({
+  rating: Joi.number().required().messages({
+    'string.base': 'The rating must be a number',
+    'any.required': 'The rating field is required',
+    'string.empty': 'The rating field must not be empty',
   }),
-  description: Joi.string().required().messages({
+  comment: Joi.string().required().messages({
     'string.base': 'The description must be a string',
     'any.required': 'The description field is required',
     'string.empty': 'The description field must not be empty',
@@ -28,7 +28,8 @@ const addRecipeSchema = Joi.object({
         measure: Joi.string().required(),
       })
     )
-    .required().messages({
+    .required()
+    .messages({
       'array.base': 'The ingredients must be an array',
       'any.required': 'The ingredients field is required',
       'array.empty': 'The ingredients field must not be empty',
@@ -40,4 +41,4 @@ const addRecipeSchema = Joi.object({
   }),
 });
 
-module.exports = addRecipeSchema;
+module.exports = addReviewSchemas;

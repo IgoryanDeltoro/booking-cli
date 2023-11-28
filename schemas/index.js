@@ -1,9 +1,7 @@
 const authSchema = require('./users');
-const addRecipeSchema = require('./recipes');
-const motivatingModalSchema = require('./motivatingModal');
+const addReviewSchemas = require('./reviews');
 
 module.exports = {
-  addRecipeSchema,
+  addReviewSchemas,
   authSchema,
-  motivatingModalSchema,
 };

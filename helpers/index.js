@@ -1,14 +1,13 @@
 const handleMongooseError = require('./handleMongooseError');
-
 const HttpError = require('./HttpError');
-
 const sendEmail = require('./sendEmail');
+const getDate = require('./getDate');
 
-const getIngredientInfo = require('./getIngredientInfo');
+
 
 module.exports = {
   HttpError,
   handleMongooseError,
   sendEmail,
-  getIngredientInfo,
+  getDate
 };
