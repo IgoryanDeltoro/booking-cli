@@ -8,7 +8,10 @@ const deleteOrder = async (req, res) => {
     $pull: { ordersList: { apartmentId } },
   });
 
-  await Apartment.findByIdAndUpdate({ _id: apartmentId }, { ordered: null });
+  await Apartment.findByIdAndUpdate(
+    { _id: apartmentId },
+    { ordered: { isOrdered: false, customer: '' } }
+  );
 
   res.status(204).json(ordersList);
 };
