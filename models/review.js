@@ -16,12 +16,20 @@ const reviewSchema = new Schema(
             type: String,
             default: '',
           },
+          rating: {
+            type: Number,
+            default: 0,
+          },
+          date: {
+            type: String,
+            default: '',
+          },
         },
       ],
       default: [],
     },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: false }
 );
 
 reviewSchema.post('save', handleMongooseError);
