@@ -32,6 +32,7 @@ const getApartmentById = async (req, res) => {
         email: user.email,
         avatar: user.avatarURL,
         comment: review.comment,
+        rating: review.rating,
       };
     });
   }
