@@ -40,8 +40,11 @@ const createReview = async (req, res) => {
 
   const sum = data.reviews.reduce((acc, el) => acc + el.rating, 0);
   const averageRating = sum / data.reviews.length;
-  
-  await Apartment.findByIdAndUpdate({ _id: id }, { rating: averageRating });
+
+  await Apartment.findByIdAndUpdate(
+    { _id: id },
+    { rating: averageRating.toFixed(1) }
+  );
 
   res.status(201).json(data);
 };
