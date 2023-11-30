@@ -1,6 +1,7 @@
-In this repository you can find backend realisation for SoYummy team project.
+In this repository you can find backend realization for Booking.
 
-With the help of our application users can search recipes for different kinds of food, add their own recipes, select favorite ones and create a shopping list of ingredients.
+With the help of our application users can search apartments for rent, book and add their in own orders list and actually it can been deleted from there. After removing the apartment from the orders list, the apartment will be opened for booking.
+
 
 Commands:
 •	npm start — starts server in production mode
@@ -10,8 +11,8 @@ Commands:
 
 You can find the documentation here:
 
-https://database-cli.onrender.com/so-yummy/api-docs
+https://database-cli.onrender.com/booking/api-docs
 
 And if you want to try the whole application you may go here:
 
-https://serhii-vasylenko.github.io/goit-final-project/
+https://my-first-vue-project-git-main-igoryandeltoro.vercel.app/go-home/
