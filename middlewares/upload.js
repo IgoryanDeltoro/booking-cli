@@ -12,26 +12,36 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
-    let folder;
-    if (file.fieldname === 'avatar') {
-      folder = 'avatars';
-    } else if (file.fieldname === 'Apartment') {
-      folder = 'Apartments';
-    } else {
-      folder = 'misc';
-    }
     const { originalname } = file;
     const cutExtraWords = originalname
       .split('')
       .splice(0, originalname.length - 4)
       .join('');
 
-    return {
-      folder: folder,
-      allowed_formats: ['jpg', 'png', 'webp'],
-      public_id: cutExtraWords,
-      transformation: [{ aspect_ratio: '1.0', width: 350, crop: 'fill' }],
-    };
+    let setup = {};
+
+    if (file.fieldname === 'avatar') {
+      setup = {
+        folder: 'avatars',
+        allowed_formats: ['jpg', 'png', 'webp'],
+        public_id: cutExtraWords,
+        transformation: [
+          { gravity: 'face', height: 350, width: 350, crop: 'thumb' },
+          { fetch_format: 'auto' },
+        ],
+      };
+    } else if (file.fieldname === 'Apartment') {
+      setup = {
+        folder: 'apartments',
+        allowed_formats: ['jpg', 'png', 'webp'],
+        public_id: cutExtraWords,
+        transformation: [{ aspect_ratio: '1.0', width: 900 }],
+      };
+    } else {
+      setup.folder = 'misc';
+    }
+
+    return setup;
   },
 });
 
