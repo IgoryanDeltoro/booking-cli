@@ -1,7 +1,13 @@
 const { Apartment } = require('../../models');
 
 const getApartments = async (req, res) => {
-  const apartments = await Apartment.find({}, '-createdAt -updatedAt').sort({
+  const { page = 1, limit = 4 } = req.query;
+  const skip = (page - 1) * limit;
+
+  const apartments = await Apartment.find({}, '-createdAt -updatedAt', {
+    skip,
+    limit,
+  }).sort({
     price: 1,
   });
 
@@ -10,7 +16,9 @@ const getApartments = async (req, res) => {
     return { id: _id.toString(), ...other };
   });
 
-  res.json(result);
+  const allApartments = await Apartment.find({});
+
+  res.json({ apartments: result, apartmentsCount: allApartments.length });
 };
 
 module.exports = getApartments;
