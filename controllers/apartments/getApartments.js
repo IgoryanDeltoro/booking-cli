@@ -4,10 +4,28 @@ const getApartments = async (req, res) => {
   const { page = 1, limit = 4 } = req.query;
   const skip = (page - 1) * limit;
 
-  const apartments = await Apartment.find({}, '-createdAt -updatedAt', {
-    skip,
-    limit,
-  }).sort({
+  let paramsSearch = {};
+
+  if (req.query.city) {
+    const city = req.query.city;
+    const capitalize = city.charAt(0).toUpperCase() + city.slice(1);
+    paramsSearch = { ...paramsSearch, location: { city: capitalize } };
+  }
+  if (req.query.price) {
+    paramsSearch = { ...paramsSearch, price: { $lte: req.query.price } };
+  }
+  if (req.query.rating) {
+    paramsSearch = { ...paramsSearch, rating: { $lte: req.query.rating } };
+  }
+
+  const apartments = await Apartment.find(
+    paramsSearch,
+    '-createdAt -updatedAt',
+    {
+      skip,
+      limit,
+    }
+  ).sort({
     price: 1,
   });
 
@@ -16,7 +34,7 @@ const getApartments = async (req, res) => {
     return { id: _id.toString(), ...other };
   });
 
-  const allApartments = await Apartment.find({});
+  const allApartments = await Apartment.find(paramsSearch);
 
   res.json({ apartments: result, apartmentsCount: allApartments.length });
 };
