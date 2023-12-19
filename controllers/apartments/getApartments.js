@@ -12,10 +12,10 @@ const getApartments = async (req, res) => {
     paramsSearch = { ...paramsSearch, location: { city: capitalize } };
   }
   if (req.query.price) {
-    paramsSearch = { ...paramsSearch, price: { $lte: req.query.price } };
+    paramsSearch = { ...paramsSearch, price: { $gte: req.query.price } };
   }
   if (req.query.rating) {
-    paramsSearch = { ...paramsSearch, rating: { $lte: req.query.rating } };
+    paramsSearch = { ...paramsSearch, rating: { $gte: req.query.rating } };
   }
 
   const apartments = await Apartment.find(
