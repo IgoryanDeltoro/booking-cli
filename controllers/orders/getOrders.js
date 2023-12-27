@@ -1,23 +1,22 @@
-const { User, Apartment } = require('../../models');
+const { Apartment, Order } = require('../../models');
 
 const getOrders = async (req, res) => {
   const { _id } = req.user;
-  const { ordersList } = await User.findById(_id, 'ordersList');
 
-  const apartmentId = ordersList.map(({ apartmentId }) => apartmentId);
+  const allOrders = await Order.find({ customer: _id });
 
   const orderedApartment = await Apartment.find({
     _id: {
-      $in: apartmentId,
+      $in: allOrders.map(({ apartment }) => apartment),
     },
   });
 
   const result = orderedApartment.map(({ _id, _doc }) => {
     const ID = _id.toString();
-    const date = ordersList
+    const date = allOrders
       // eslint-disable-next-line array-callback-return
       .map(el => {
-        if (el.apartmentId === ID) return el.date;
+        if (el.apartment === ID) return el.date;
       })
       .join('');
 
