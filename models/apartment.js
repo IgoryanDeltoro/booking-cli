@@ -44,16 +44,6 @@ const apartmentSchema = new Schema(
         required: true,
       },
     },
-    ordered: {
-      isOrdered: {
-        type: Boolean,
-        default: false,
-      },
-      customer: {
-        type: String,
-        default: '',
-      },
-    },
   },
   { versionKey: false, timestamps: false }
 );
