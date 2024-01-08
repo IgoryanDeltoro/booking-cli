@@ -24,22 +24,6 @@ const userSchema = new Schema(
     token: {
       type: String,
     },
-    ordersList: {
-      _id: false,
-      type: [
-        {
-          apartmentId: {
-            type: String,
-            required: true,
-          },
-          date: {
-            type: String,
-            required: true,
-          },
-        },
-      ],
-      default: [],
-    },
   },
   { versionKey: false, timestamps: true }
 );
