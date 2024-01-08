@@ -1,10 +1,36 @@
-const { Apartment } = require('../../models');
+const { Apartment, Order } = require('../../models');
 
 const getApartments = async (req, res) => {
   const { page = 1, limit = 4 } = req.query;
   const skip = (page - 1) * limit;
 
   let paramsSearch = {};
+
+  const orderedApartment = await Order.find(
+    {
+      $or: [
+        {
+          $and: [
+            { 'date.from': { $lte: req.query.from } },
+            { 'date.to': { $gte: req.query.to } },
+          ],
+        },
+        {
+          $and: [
+            { 'date.from': { $lte: req.query.from } },
+            { 'date.to': { $gte: req.query.to } },
+          ],
+        },
+        {
+          $and: [
+            { 'date.from': { $gte: req.query.from } },
+            { 'date.to': { $lte: req.query.to } },
+          ],
+        },
+      ],
+    },
+    'apartment'
+  );
 
   if (req.query.city) {
     const city = req.query.city;
@@ -17,7 +43,13 @@ const getApartments = async (req, res) => {
   if (req.query.rating) {
     paramsSearch = { ...paramsSearch, rating: { $gte: req.query.rating } };
   }
-
+  if (req.query.from) {
+    paramsSearch = {
+      ...paramsSearch,
+      _id: { $nin: orderedApartment.map(({ apartment }) => apartment) },
+    };
+  }
+  
   const apartments = await Apartment.find(
     paramsSearch,
     '-createdAt -updatedAt',

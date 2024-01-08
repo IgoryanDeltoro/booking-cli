@@ -1,30 +1,42 @@
-const { User, Apartment, Order } = require('../../models');
+const { Order } = require('../../models');
 const { HttpError } = require('../../helpers');
 
 const createOrder = async (req, res) => {
   const { _id } = req.user;
+  const { apartment, date } = req.body;
 
-  // const orders = await User.findById(_id, 'ordersList');
-  // const result = orders.ordersList.filter(el => el.apartmentId === apartmentId);
+  const fondDate = await Order.find({
+    $or: [
+      {
+        $and: [
+          { 'date.from': { $lte: date.from } },
+          { 'date.to': { $gte: date.to } },
+        ],
+      },
+      {
+        $and: [
+          { 'date.from': { $lte: date.from } },
+          { 'date.to': { $gte: date.to } },
+        ],
+      },
+      {
+        $and: [
+          { 'date.from': { $gte: date.from } },
+          { 'date.to': { $lte: date.to } },
+        ],
+      },
+    ],
+    apartment: apartment,
+  });
 
-  // if (result.length !== 0) {
-  //   throw HttpError(409, 'The apartment has been already booked');
-  // }
-
-  // const { ordersList } = await User.findByIdAndUpdate(
-  //   _id,
-  //   { $push: { ordersList: req.body } },
-  //   { new: true }
-  // );
-
-  // const ordered = {
-  //   isOrdered: true,
-  //   customer: _id,
-  // };
+  if (fondDate.length !== 0) {
+    throw HttpError(
+      409,
+      `The apartment has been already booked from the ${date.from}th to the ${date.from}th`
+    );
+  }
 
   const result = await Order.create({ ...req.body, customer: _id });
-
-  // await Apartment.findOneAndUpdate({ _id: apartmentId }, { ordered });
 
   res.status(201).json(result);
 };
